@@ -7,7 +7,7 @@
 
 # BitChord
 
-### Aesthetic YouTube Music Client
+### Aesthetic YouTube Music Client 
 
 <br/>
 
