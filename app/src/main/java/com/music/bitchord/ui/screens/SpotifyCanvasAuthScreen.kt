@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -30,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.music.bitchord.auth.SpotifyLoginScreen
 import com.music.bitchord.data.settings.AppSettings
 import com.music.bitchord.R
 
@@ -42,6 +44,15 @@ fun SpotifyCanvasAuthScreen(
     val autoHidePlayer by AppSettings.spotifyCanvasAutoHide.collectAsStateWithLifecycle()
     val prioritizeSpotify by AppSettings.prioritizeSpotifyCanvas.collectAsStateWithLifecycle()
     var tokenInput by remember(currentToken) { mutableStateOf(currentToken) }
+    var showLogin by remember { mutableStateOf(false) }
+
+    if (showLogin) {
+        SpotifyLoginScreen(
+            onSignedIn = { showLogin = false },
+            modifier = Modifier.statusBarsPadding(),
+        )
+        return
+    }
 
     Scaffold(
         topBar = {
@@ -90,6 +101,13 @@ fun SpotifyCanvasAuthScreen(
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 16.dp, bottom = 24.dp)
             )
+
+            Button(
+                onClick = { showLogin = true },
+                modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+            ) {
+                Text("Sign in with Spotify")
+            }
 
             OutlinedTextField(
                 value = tokenInput,
